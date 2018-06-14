@@ -1,0 +1,176 @@
+import com.android.build.gradle.api.ApplicationVariant
+import groovy.xml.XmlUtil
+
+apply plugin: 'com.android.application'
+apply plugin: AssetPlugin
+//apply plugin: DexPlugin
+android {
+    compileSdkVersion 26
+
+    defaultConfig {
+        applicationId "com.sososeen09.multidexbuild"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+//multidex打包过程 自定义存放在muldex的配置对应的API是 DexProcessBuilder
+//project.afterEvaluate {
+//    project.tasks.matching {
+//        it.name.startsWith("dex")
+//    }.each { dx ->
+//        logger.quiet("dex mathched task: " + dx)
+//        def maindexlistfile = project.rootDir.absolutePath+"/multidexbuild/maindexlist.txt"
+//        if (dx.additionalParameters == null) {
+//            dx.additionalParameters = []
+//        }
+//        //表示当方法数越界时则生成多个dex文件（我的没有越界，貌似也生成了两个）
+//        dx.additionalParameters += '--multi-dex'
+//        //这个指定了listFile中的类（即maindexlist.txt中的类）会打包到主dex中，不过注意下一条。
+//        dx.additionalParameters += '--main-dex-list=' + maindexlistfile
+//        //表明只有-main-dex-list所指定的类（在我的配置中，就是app目录下的maindexlist.txt中包含的类）才能打包到主dex中，如果没有这个选项，上个选项就会失效
+//        dx.additionalParameters += '--minimal-main-dex'
+//    }
+//}
+
+// 打包的时候往assets中添加资源
+//project.afterEvaluate {
+//    android.applicationVariants.each { ApplicationVariant variant ->
+//        String variantName = variant.name.capitalize()
+//        def packageTask = project.tasks.getByName("package${variantName}")
+//        logger.quiet("packageTask: " + packageTask.class)
+//        packageTask.doFirst {
+//            project.copy { param ->
+//                from "/works/gradleStudy/AndroidGradleStudy/Gradle.pdf"
+//                into "${packageTask.assets}"
+//                logger.quiet("itAssets: " + packageTask.class)
+//            }
+//        }
+//    }
+//}
+
+//过滤variant
+android.variantFilter { variant ->
+    if (variant.buildType.name == 'release') {
+        variant.flavors.each { flavor ->
+            if (flavor.name == 'blue') {
+                variant.ignore = true
+            }
+        }
+    }
+}
+
+project.afterEvaluate {
+    android.applicationVariants.each { ApplicationVariant variant ->
+        String variantName = variant.name.capitalize()
+        //对应的API 是ProcessManifest这个类，继承自ManifestProcessorTask
+        def processManifestTask = project.tasks.getByName("process${variantName}Manifest")
+        logger.quiet("processManifestTask: " + processManifestTask.class)
+        processManifestTask.doLast { mm ->
+            logger.quiet("doLast: " + mm)
+            logger.quiet("doLast: " + it)
+            if (project.hasProperty("channel")) {
+                //在2.3的时候还支持这个
+//                addChannel(processManifestTask.manifestOutputFile)
+                //在3.0以上，已经不支持使用manifestOutputFile了具体可以查看ManifestProcessorTask这个类，3.0使用manifestOutputDirectory
+                addChannel(processManifestTask.manifestOutputDirectory)
+            }
+        }
+    }
+}
+
+project.afterEvaluate {
+    android.applicationVariants.each { ApplicationVariant variant ->
+        String variantName = variant.name.capitalize()
+        project.tasks.names.each {
+            logger.quiet("${variantName} taskName: " + it)
+        }
+    }
+}
+
+
+def addChannel(File manifestOutputFile) {
+    if (manifestOutputFile) {
+        def channelValue = project.property("channel")
+        def xml = new XmlParser().parse(manifestOutputFile)
+        xml.application[0].appendNode("meta-data", ["android:name": "channel", "android:value": channelValue])
+        manifestOutputFile.withPrintWriter("UTF-8") {
+            XmlUtil.serialize(xml, it)
+        }
+    }
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+//class DexPlugin implements Plugin<Project> {
+//
+//    @Override
+//    void apply(Project project) {
+//        project.afterEvaluate {
+//            project.android.applicationVariants.each { ApplicationVariant variant ->
+//                project.logger.quiet("project tasks: " + project.tasks)
+//
+//                String variantName = variant.name.capitalize()
+////                //transformDexWithDexForRelease
+////            transformClassesWithDexBuilderForDebug
+//                if (project.tasks.contains("transformDexWithDexFor${variantName}")) {
+//                    def transformDexTask = project.tasks.getByName("transformDexWithDexFor${variantName}")
+//                    if (transformDexTask != null) {
+//                        logger.quiet("transformDexTask: " + transformDexTask.class)
+//                    }
+//                }
+//                if (project.tasks.contains("transformClassesWithDexBuilderFor${variantName}")) {
+//
+//                    def transformClassesWithDexBuilderForTask = project.tasks.getByName("transformClassesWithDexBuilderFor${variantName}")
+//                    if (transformClassesWithDexBuilderForTask != null) {
+//                        logger.quiet("transformClassesWithDexBuilderForTask: " + transformClassesWithDexBuilderForTask.class)
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
+//}
+
+class AssetPlugin implements Plugin<Project> {
+
+    @Override
+    void apply(Project project) {
+        project.afterEvaluate {
+            project.android.applicationVariants.each { ApplicationVariant variant ->
+                String variantName = variant.name.capitalize()
+                def packageTask = project.tasks.getByName("package${variantName}")
+                project.logger.quiet("packageTask: " + packageTask.class)
+                project.logger.quiet("packageTask assets path: " + packageTask.assets.asPath)
+                packageTask.doFirst {
+                    project.copy { param ->
+                        from "../multidexbuild/assets"
+                        //很坑的一点是，2.3.3下是packageTask.assets，到3.0就变成packageTask.assets.asPath
+                        into "${packageTask.assets.asPath}"
+                    }
+                }
+            }
+        }
+    }
+}
