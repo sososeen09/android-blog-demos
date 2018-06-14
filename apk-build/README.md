@@ -1,5 +1,5 @@
 
-> 注意:使用命令行打包，注意确保adb 和 aapt等配置好环境变量
+> 注意:使用命令行打包，注意需要配置好环境变量，确保adb 、dx、aapt等命令都可以正常使用
 
 # 打包方式
 
@@ -51,3 +51,6 @@ dx --dex --output=fixed.dex com/sososeen09/multidexbuild/SimpleMathUtils.class
 
 3 本例子为了方便，已经把修复好的dex放在了assets中，运行时通过点击fix就可以记载assets中的dex文件
 
+# blog
+
+- [Apk文件构建流程](https://www.jianshu.com/p/c8ccf7ffa79e)

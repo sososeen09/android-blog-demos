@@ -31,6 +31,7 @@ project_dir=$(pwd)
 
 echo "project_dir: ${project_dir}"
 
+# 需要更改为自己的android sdk存放的目录
 sdk_folder=/works/android/android-sdk-macosx
 platform_folder=${sdk_folder}/platforms/android-26
 android_jar=${platform_folder}/android.jar
