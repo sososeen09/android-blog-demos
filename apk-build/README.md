@@ -10,7 +10,7 @@
 
 运行效果如下图：
 
-<img src=art/screen_shot_1.png width=260px><img src=art/screen_shot_2.png width=260px><img src=art/screen_shot_3.png width=260px>
+<img src="art/screen_shot_1.png" width=260><img src="art/screen_shot_2.png" width=260><img src="art/screen_shot_3.png" width=260>
 
 直接点击getResult按钮会crash，因为 `10/0 `，运行期肯定会报错。点击fix 按钮之后通过热修复的方式把代码做了更改，把代码中的 `10/0` 改成了 `10/1`，然后再点击 getResult 按钮的时候就没问题了。
 
