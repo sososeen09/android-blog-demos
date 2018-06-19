@@ -3,6 +3,7 @@ import groovy.xml.XmlUtil
 
 apply plugin: 'com.android.application'
 apply plugin: AssetPlugin
+apply plugin: TransformPlugin
 //apply plugin: DexPlugin
 android {
     compileSdkVersion 26
@@ -172,5 +173,58 @@ class AssetPlugin implements Plugin<Project> {
                 }
             }
         }
+    }
+}
+
+class TransformPlugin implements Plugin<Project>{
+    @Override
+    void apply(Project project) {
+        project.logger.error("==================")
+        project.logger.error("my transform start")
+        project.logger.error("==================")
+//        project.android.registerTransform(new MyTransform(project))
+    }
+}
+import com.android.build.api.transform.*
+import com.android.build.api.transform.QualifiedContent.ContentType
+import com.android.build.api.transform.QualifiedContent.Scope
+import com.google.common.collect.Sets
+class MyTransform extends Transform {
+    Project project
+
+     MyTransform(Project project) {    // 构造函数，我们将Project保存下来备用
+        this.project = project
+    }
+
+    @Override
+    String getName() {
+        return "my transform"
+    }
+
+    // 指定输入的类型，通过这里的设定，可以指定我们要处理的文件类型这样确保其他类型的文件不会传入
+    @Override
+    Set<ContentType> getInputTypes() {
+        return Sets.immutableEnumSet(QualifiedContent.DefaultContentType.CLASSES)
+    }
+
+    // 指定Transform的作用范围
+    @Override
+    Set<? super Scope> getScopes() {
+        return Sets.immutableEnumSet(Scope.PROJECT, Scope.PROJECT_LOCAL_DEPS,
+                Scope.SUB_PROJECTS, Scope.SUB_PROJECTS_LOCAL_DEPS,
+                Scope.EXTERNAL_LIBRARIES)
+    }
+
+    @Override
+    boolean isIncremental() {
+        return false
+    }
+
+    @Override
+    void transform(Context context, Collection<TransformInput> inputs,
+                   Collection<TransformInput> referencedInputs,
+                   TransformOutputProvider outputProvider, boolean isIncremental)
+            throws IOException, TransformException, InterruptedException {
+        this.project.logger.error("my transform transform method")
     }
 }
