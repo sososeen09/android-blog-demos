@@ -1,10 +1,18 @@
+import com.android.build.api.transform.*
+import com.android.build.api.transform.QualifiedContent.ContentType
+import com.android.build.api.transform.QualifiedContent.Scope
 import com.android.build.gradle.api.ApplicationVariant
+import com.google.common.collect.Sets
 import groovy.xml.XmlUtil
+import org.apache.commons.io.FileUtils
 
+// 对应的plugin类是AppPlugin
 apply plugin: 'com.android.application'
 apply plugin: AssetPlugin
 apply plugin: TransformPlugin
 //apply plugin: DexPlugin
+
+// android 对应的是AppExtension
 android {
     compileSdkVersion 26
 
@@ -26,6 +34,10 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 //multidex打包过程 自定义存放在muldex的配置对应的API是 DexProcessBuilder
@@ -176,29 +188,27 @@ class AssetPlugin implements Plugin<Project> {
     }
 }
 
-class TransformPlugin implements Plugin<Project>{
+class TransformPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.logger.error("==================")
         project.logger.error("my transform start")
         project.logger.error("==================")
-//        project.android.registerTransform(new MyTransform(project))
+        project.android.registerTransform(new ClassTransform(project))
     }
 }
-import com.android.build.api.transform.*
-import com.android.build.api.transform.QualifiedContent.ContentType
-import com.android.build.api.transform.QualifiedContent.Scope
-import com.google.common.collect.Sets
-class MyTransform extends Transform {
+
+class ClassTransform extends Transform {
     Project project
 
-     MyTransform(Project project) {    // 构造函数，我们将Project保存下来备用
+    ClassTransform(Project project) {    // 构造函数，我们将Project保存下来备用
         this.project = project
     }
 
     @Override
     String getName() {
-        return "my transform"
+        //这个返回的名字就是会在编译过程中 生成目录 ./build/intermediates/transforms/classTransform
+        return "classTransform"
     }
 
     // 指定输入的类型，通过这里的设定，可以指定我们要处理的文件类型这样确保其他类型的文件不会传入
@@ -225,6 +235,43 @@ class MyTransform extends Transform {
                    Collection<TransformInput> referencedInputs,
                    TransformOutputProvider outputProvider, boolean isIncremental)
             throws IOException, TransformException, InterruptedException {
-        this.project.logger.error("my transform transform method")
+
+        def startTime = System.currentTimeMillis()
+        project.logger.error("ClassTransform isIncremental: " + isIncremental)
+        if (!isIncremental) {
+            outputProvider.deleteAll()
+        }
+        // Transform的inputs有两种类型，一种是目录，一种是jar包，要分开遍历
+        inputs.each { TransformInput input ->
+            try {
+                input.jarInputs.each {
+                    String outputFileName = it.name.replace(".jar", "") + '-' + it.file.path.hashCode()
+                    def output = outputProvider.getContentLocation(outputFileName, it.contentTypes, it.scopes, Format.JAR)
+                    project.logger.error("outputProvider input: " + it.file.absolutePath)
+                    project.logger.error("outputProvider output: " + output.absolutePath)
+                    FileUtils.copyFile(it.file, output)
+                }
+            } catch (Exception e) {
+                project.logger.error("ClassTransform error: " + e.getMessage())
+            }
+            //对类型为“文件夹”的input进行遍历
+            try {
+                input.directoryInputs.each { DirectoryInput directoryInput ->
+                    // 获取output目录
+                    def dest = outputProvider.getContentLocation(directoryInput.name,
+                            directoryInput.contentTypes, directoryInput.scopes,
+                            Format.DIRECTORY)
+
+                    // 将input的目录复制到output指定目录
+                    FileUtils.copyDirectory(directoryInput.file, dest)
+                    project.logger.error("outputProvider folder input: " + directoryInput.file.absolutePath)
+                    project.logger.error("outputProvider folder output: " + dest.absolutePath)
+                }
+            } catch (Exception e) {
+                project.logger.error("ClassTransform error: " + e.getMessage())
+            }
+        }
+
+        this.project.logger.error("ClassTransform transform method cost: ${(System.currentTimeMillis() - startTime) / 1000}  secs")
     }
 }
