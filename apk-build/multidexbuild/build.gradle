@@ -27,8 +27,21 @@ android {
 
     }
 
+    signingConfigs {
+        config {
+            keyAlias 'demo'
+            keyPassword "123456"
+            storeFile file('../demo.jks')
+            storePassword "123456"
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig signingConfigs.config
+        }
         release {
+            signingConfig signingConfigs.config
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -41,23 +54,24 @@ android {
 }
 
 //multidex打包过程 自定义存放在muldex的配置对应的API是 DexProcessBuilder
-//project.afterEvaluate {
-//    project.tasks.matching {
-//        it.name.startsWith("dex")
-//    }.each { dx ->
-//        logger.quiet("dex mathched task: " + dx)
-//        def maindexlistfile = project.rootDir.absolutePath+"/multidexbuild/maindexlist.txt"
-//        if (dx.additionalParameters == null) {
-//            dx.additionalParameters = []
-//        }
-//        //表示当方法数越界时则生成多个dex文件（我的没有越界，貌似也生成了两个）
-//        dx.additionalParameters += '--multi-dex'
-//        //这个指定了listFile中的类（即maindexlist.txt中的类）会打包到主dex中，不过注意下一条。
-//        dx.additionalParameters += '--main-dex-list=' + maindexlistfile
-//        //表明只有-main-dex-list所指定的类（在我的配置中，就是app目录下的maindexlist.txt中包含的类）才能打包到主dex中，如果没有这个选项，上个选项就会失效
-//        dx.additionalParameters += '--minimal-main-dex'
-//    }
-//}
+project.afterEvaluate {
+    project.tasks.matching {
+        logger.quiet("dex task name: " + it.name)
+        it.name.startsWith("dex")
+    }.each { dx ->
+        logger.quiet("dex mathched task: " + dx)
+        def maindexlistfile = project.rootDir.absolutePath+"/multidexbuild/maindexlist.txt"
+        if (dx.additionalParameters == null) {
+            dx.additionalParameters = []
+        }
+        //表示当方法数越界时则生成多个dex文件（我的没有越界，貌似也生成了两个）
+        dx.additionalParameters += '--multi-dex'
+        //这个指定了listFile中的类（即maindexlist.txt中的类）会打包到主dex中，不过注意下一条。
+        dx.additionalParameters += '--main-dex-list=' + maindexlistfile
+        //表明只有-main-dex-list所指定的类（在我的配置中，就是app目录下的maindexlist.txt中包含的类）才能打包到主dex中，如果没有这个选项，上个选项就会失效
+        dx.additionalParameters += '--minimal-main-dex'
+    }
+}
 
 // 打包的时候往assets中添加资源
 //project.afterEvaluate {
@@ -105,14 +119,14 @@ project.afterEvaluate {
     }
 }
 
-project.afterEvaluate {
-    android.applicationVariants.each { ApplicationVariant variant ->
-        String variantName = variant.name.capitalize()
-        project.tasks.names.each {
-            logger.quiet("${variantName} taskName: " + it)
-        }
-    }
-}
+//project.afterEvaluate {
+//    android.applicationVariants.each { ApplicationVariant variant ->
+//        String variantName = variant.name.capitalize()
+//        project.tasks.names.each {
+//            logger.quiet("${variantName} taskName: " + it)
+//        }
+//    }
+//}
 
 
 def addChannel(File manifestOutputFile) {
@@ -136,35 +150,49 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
 
-//class DexPlugin implements Plugin<Project> {
-//
-//    @Override
-//    void apply(Project project) {
-//        project.afterEvaluate {
-//            project.android.applicationVariants.each { ApplicationVariant variant ->
-//                project.logger.quiet("project tasks: " + project.tasks)
-//
-//                String variantName = variant.name.capitalize()
-////                //transformDexWithDexForRelease
-////            transformClassesWithDexBuilderForDebug
-//                if (project.tasks.contains("transformDexWithDexFor${variantName}")) {
-//                    def transformDexTask = project.tasks.getByName("transformDexWithDexFor${variantName}")
-//                    if (transformDexTask != null) {
-//                        logger.quiet("transformDexTask: " + transformDexTask.class)
-//                    }
-//                }
-//                if (project.tasks.contains("transformClassesWithDexBuilderFor${variantName}")) {
-//
-//                    def transformClassesWithDexBuilderForTask = project.tasks.getByName("transformClassesWithDexBuilderFor${variantName}")
-//                    if (transformClassesWithDexBuilderForTask != null) {
-//                        logger.quiet("transformClassesWithDexBuilderForTask: " + transformClassesWithDexBuilderForTask.class)
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-//}
+class DexPlugin implements Plugin<Project> {
+
+    @Override
+    void apply(Project project) {
+        project.afterEvaluate {
+            project.android.applicationVariants.each { ApplicationVariant variant ->
+                String variantName = variant.name.capitalize()
+                //transformClassesWithDexForRelease
+//              transformClassesWithDexBuilderForDebug
+                if (variantName.contains("Release")) {
+                    try {
+                        def transformDexTask = project.tasks.getByName("transformClassesWithDexFor${variantName}")
+                        if (transformDexTask != null) {
+                            project.logger.error("transformDexTask: " + transformDexTask.class)
+                        }
+                    } catch (UnknownTaskException e) {
+                        project.logger.error("UnknownTaskException: " + e.getMessage())
+                    }
+                }
+                if (variantName.contains("Debug")) {
+                    try {
+                        def transformDexTask = project.tasks.getByName("transformClassesWithDexBuilderFor${variantName}")
+                        if (transformDexTask != null) {
+                            project.logger.error("transformDexBuilderTask: " + transformDexTask.class)
+                        }
+                    } catch (UnknownTaskException e) {
+                        project.logger.error("UnknownTaskException: " + e.getMessage())
+                    }
+                }
+
+                //transformClassesWithMultidexlistForRelease
+                try {
+                    def transformDexTask = project.tasks.getByName("transformClassesWithMultidexlistFor${variantName}")
+                    if (transformDexTask != null) {
+                        project.logger.error("transformClassesWithMultidexlistTask: " + transformDexTask.class)
+                    }
+                } catch (UnknownTaskException e) {
+                    project.logger.error("UnknownTaskException: " + e.getMessage())
+                }
+            }
+        }
+    }
+}
 
 class AssetPlugin implements Plugin<Project> {
 
@@ -194,7 +222,7 @@ class TransformPlugin implements Plugin<Project> {
         project.logger.error("==================")
         project.logger.error("my transform start")
         project.logger.error("==================")
-        project.android.registerTransform(new ClassTransform(project))
+//        project.android.registerTransform(new ClassTransform(project))
     }
 }
 
