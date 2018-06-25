@@ -20,11 +20,21 @@ public class StatusCheckAspect {
     private static final String TAG = "StatusCheckAspect";
     private Map<Class<? extends StatusCheck>, StatusCheck> cache = new HashMap<>();
 
+    //定义切面的规则
+    //1.就在原来应用中哪些注释的地方放到当前切面进行处理
+    //execution(注解名   注解用的地方)
+    //方法名自己定义
     @Pointcut("execution(@com.sososeen09.status.check.Check * *(..))")
     public void checkStatus() {
 
     }
 
+    //2.对进入切面的内容如何处理
+    //advice
+    //@Before()  在切入点之前运行
+    //@After()   在切入点之后运行
+    //@Around()  在切入点前后都运行
+    //方法名自己定义
     @Around("checkStatus()")
     public void aroundJointPoint(final ProceedingJoinPoint joinPoint) throws Throwable {
         //初始化context
