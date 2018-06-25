@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.sososeen09.aop_tech.BindPhoneActivity;
-import com.sososeen09.aop_tech.StatusTest;
+import com.sososeen09.aop_tech.StatusHolder;
 import com.sososeen09.status.check.StatusCheck;
 
 /**
@@ -15,10 +15,10 @@ import com.sososeen09.status.check.StatusCheck;
 public class BindPhoneStatusCheck implements StatusCheck {
     @Override
     public boolean doCheck(Context context) {
-        if (!StatusTest.sHasBindPhone) {
+        if (!StatusHolder.sHasBindPhone) {
             onCheckNotPassed(context);
         }
-        return StatusTest.sHasBindPhone;
+        return StatusHolder.sHasBindPhone;
     }
 
     private String getTitle() {

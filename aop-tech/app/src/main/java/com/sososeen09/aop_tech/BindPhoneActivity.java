@@ -15,7 +15,7 @@ public class BindPhoneActivity extends AppCompatActivity {
         findViewById(R.id.btn_bind).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StatusTest.sHasBindPhone = true;
+                StatusHolder.sHasBindPhone = true;
                 Toast.makeText(BindPhoneActivity.this, "绑定手机号成功", Toast.LENGTH_SHORT).show();
                 finish();
             }

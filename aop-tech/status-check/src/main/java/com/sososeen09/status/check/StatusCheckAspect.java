@@ -42,6 +42,7 @@ public class StatusCheckAspect {
 
         if (context == null) {
             Log.e(TAG, "aroundJonitPoint checkStatus error ");
+            joinPoint.proceed();
             return;
         }
 

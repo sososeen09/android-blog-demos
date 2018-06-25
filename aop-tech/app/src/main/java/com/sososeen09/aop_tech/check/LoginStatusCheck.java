@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.sososeen09.aop_tech.LoginActivity;
-import com.sososeen09.aop_tech.StatusTest;
+import com.sososeen09.aop_tech.StatusHolder;
 import com.sososeen09.status.check.StatusCheck;
 
 
@@ -16,10 +16,10 @@ import com.sososeen09.status.check.StatusCheck;
 public class LoginStatusCheck implements StatusCheck {
     @Override
     public boolean doCheck(Context context) {
-        if (!StatusTest.sHasLogin) {
+        if (!StatusHolder.sHasLogin) {
             onCheckNotPassed(context);
         }
-        return StatusTest.sHasLogin;
+        return StatusHolder.sHasLogin;
     }
 
     private String getTitle() {

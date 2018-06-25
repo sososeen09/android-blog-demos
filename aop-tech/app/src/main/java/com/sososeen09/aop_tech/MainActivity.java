@@ -30,11 +30,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         StringBuilder sb = new StringBuilder();
         sb.append("登录: ");
-        sb.append(StatusTest.sHasLogin);
+        sb.append(StatusHolder.sHasLogin);
         sb.append("\n");
 
         sb.append("绑定手机号: ");
-        sb.append(StatusTest.sHasBindPhone);
+        sb.append(StatusHolder.sHasBindPhone);
 
         tvStatus.setText(sb);
     }

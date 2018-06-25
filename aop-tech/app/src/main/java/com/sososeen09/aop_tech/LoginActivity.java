@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        StatusTest.sHasLogin = true;
+        StatusHolder.sHasLogin = true;
         Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
         finish();
     }
