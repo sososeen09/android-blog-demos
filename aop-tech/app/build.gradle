@@ -56,7 +56,7 @@ variants.all { variant ->
                          "-d", javaCompile.destinationDir.toString(),
                          "-classpath", javaCompile.classpath.asPath,
                          "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
-        log.debug "ajc args: " + Arrays.toString(args)
+        log.error "ajc args: " + Arrays.toString(args)
 
         MessageHandler handler = new MessageHandler(true);
         new Main().run(args, handler);

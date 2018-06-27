@@ -40,6 +40,7 @@ public class ClickAspect {
         String resEntryName = null;
         String resName = null;
         if (view != null) {
+            // resEntryName: btn_activity_2  resName: com.sososeen09.aop_tech:id/btn_activity_2
             resEntryName = view.getContext().getResources().getResourceEntryName(view.getId());
             resName = view.getContext().getResources().getResourceName(view.getId());
         }

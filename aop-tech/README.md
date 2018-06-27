@@ -161,8 +161,8 @@ android.libraryVariants.all { variant ->
 ```
 
 # 相关
-- [HujiangTechnology / gradle_plugin_android_aspectjx](https://github.com/north2016/T-MVP)
-- [north2016 / T-MVP](https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx)
+- [HujiangTechnology / gradle_plugin_android_aspectjx](https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx)
+- [north2016 / T-MVP](https://github.com/north2016/T-MVP)
 - [JakeWharton/hugo](https://github.com/JakeWharton/hugo)
 - [深入理解Android之AOP](https://blog.csdn.net/innost/article/details/49387395)
 - [安卓AOP三剑客:APT,AspectJ,Javassist](https://www.jianshu.com/p/dca3e2c8608a)
