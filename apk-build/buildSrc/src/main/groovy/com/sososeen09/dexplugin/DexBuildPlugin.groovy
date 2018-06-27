@@ -15,7 +15,7 @@ class DexBuildPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.gradle.addListener(new TaskTimeLisener())
+        project.gradle.addListener(new TaskTimeListener())
         project.getGradle().getTaskGraph().addTaskExecutionGraphListener(new TaskExecutionGraphListener() {
             @Override
             void graphPopulated(TaskExecutionGraph taskGraph) {

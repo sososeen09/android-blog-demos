@@ -8,7 +8,7 @@ import org.gradle.api.initialization.Settings
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
 
-class TaskTimeLisener implements TaskExecutionListener, BuildListener {
+class TaskTimeListener implements TaskExecutionListener, BuildListener {
     private long startTime
     private timings = []
 
