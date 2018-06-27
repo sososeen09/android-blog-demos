@@ -38,6 +38,9 @@ dependencies {
 }
 ```
 
+**疑问**
+1. 沪江的这个插件中并没有在library 中引入，那么是如何做到把library中的class文件也按照aspeactj进行处理了呢？
+
 ## 自己接入aspectj
 
 在项目根目录build.gradle下引入aspectjtools插件：

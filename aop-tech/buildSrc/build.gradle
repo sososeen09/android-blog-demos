@@ -1,0 +1,12 @@
+repositories {
+    google()
+    jcenter()
+}
+
+dependencies {
+    compile localGroovy()
+    compile gradleApi()
+    compile 'com.android.tools.build:gradle:3.1.2'
+    compile 'com.android.tools.build:transform-api:1.5.0'
+    compile "org.aspectj:aspectjtools:1.8.13"
+}
