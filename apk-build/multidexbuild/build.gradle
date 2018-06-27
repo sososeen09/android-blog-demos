@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils
 apply plugin: 'com.android.application'
 apply plugin: AssetPlugin
 apply plugin: TransformPlugin
+apply plugin: 'com.sososeen09.dexbuild'
 //apply plugin: DexPlugin
 
 // android 对应的是AppExtension
@@ -25,6 +26,11 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+    }
+
+    dexOptions {
+        preDexLibraries = false
+        additionalParameters = ["--minimal-main-dex"]
     }
 
     signingConfigs {
@@ -54,24 +60,24 @@ android {
 }
 
 //multidex打包过程 自定义存放在muldex的配置对应的API是 DexProcessBuilder
-project.afterEvaluate {
-    project.tasks.matching {
-        logger.quiet("dex task name: " + it.name)
-        it.name.startsWith("dex")
-    }.each { dx ->
-        logger.quiet("dex mathched task: " + dx)
-        def maindexlistfile = project.rootDir.absolutePath+"/multidexbuild/maindexlist.txt"
-        if (dx.additionalParameters == null) {
-            dx.additionalParameters = []
-        }
-        //表示当方法数越界时则生成多个dex文件（我的没有越界，貌似也生成了两个）
-        dx.additionalParameters += '--multi-dex'
-        //这个指定了listFile中的类（即maindexlist.txt中的类）会打包到主dex中，不过注意下一条。
-        dx.additionalParameters += '--main-dex-list=' + maindexlistfile
-        //表明只有-main-dex-list所指定的类（在我的配置中，就是app目录下的maindexlist.txt中包含的类）才能打包到主dex中，如果没有这个选项，上个选项就会失效
-        dx.additionalParameters += '--minimal-main-dex'
-    }
-}
+//project.afterEvaluate {
+//    project.tasks.matching {
+//        logger.quiet("dex task name: " + it.name)
+//        it.name.startsWith("dex")
+//    }.each { dx ->
+//        logger.quiet("dex mathched task: " + dx)
+//        def maindexlistfile = project.rootDir.absolutePath+"/multidexbuild/maindexlist.txt"
+//        if (dx.additionalParameters == null) {
+//            dx.additionalParameters = []
+//        }
+//        //表示当方法数越界时则生成多个dex文件（我的没有越界，貌似也生成了两个）
+//        dx.additionalParameters += '--multi-dex'
+//        //这个指定了listFile中的类（即maindexlist.txt中的类）会打包到主dex中，不过注意下一条。
+//        dx.additionalParameters += '--main-dex-list=' + maindexlistfile
+//        //表明只有-main-dex-list所指定的类（在我的配置中，就是app目录下的maindexlist.txt中包含的类）才能打包到主dex中，如果没有这个选项，上个选项就会失效
+//        dx.additionalParameters += '--minimal-main-dex'
+//    }
+//}
 
 // 打包的时候往assets中添加资源
 //project.afterEvaluate {
