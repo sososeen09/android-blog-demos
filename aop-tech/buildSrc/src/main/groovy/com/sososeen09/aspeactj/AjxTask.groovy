@@ -3,18 +3,28 @@ package com.sososeen09.aspeactj
 import org.aspectj.bridge.IMessage
 import org.aspectj.bridge.MessageHandler
 import org.aspectj.tools.ajc.Main
-import org.gradle.api.tasks.compile.AbstractCompile
+import org.gradle.api.Project
 
-class AjxTask extends AbstractCompile {
-
-    String encoding
+class AjxTask implements ITask {
+    Project project
     ArrayList<File> inPath = new ArrayList<>()
     ArrayList<File> aspectPath = new ArrayList<>()
-    String bootClasspath
+    ArrayList<File> classPath = new ArrayList<>()
+    List<String> ajcArgs = new ArrayList<>()
+    String encoding
+    String bootClassPath
+    String sourceCompatibility
+    String targetCompatibility
+
     String outputDir
+    String outputJar
+
+    AjxTask(Project proj) {
+        project = proj
+    }
 
     @Override
-    protected void compile() {
+    Object call() throws Exception {
         final def log = project.logger
 
         //http://www.eclipse.org/aspectj/doc/released/devguide/ajc-ref.html
@@ -34,13 +44,13 @@ class AjxTask extends AbstractCompile {
         // -preserveAllLocals:
         //  Preserve all local variables during code generation (to facilitate debugging).
 
-        String[] args = [
+        def args = [
                 "-showWeaveInfo",
                 "-encoding", encoding,
-                "-source", getSourceCompatibility(),
-                "-target", getTargetCompatibility(),
-                "-classpath", classpath.asPath,
-                "-bootclasspath", bootClasspath
+                "-source", sourceCompatibility,
+                "-target", targetCompatibility,
+                "-classpath", classPath.join(File.pathSeparator),
+                "-bootclasspath", bootClassPath
         ]
 
 
@@ -59,14 +69,32 @@ class AjxTask extends AbstractCompile {
             args << outputDir
         }
 
-        log.debug "ajc args: " + Arrays.toString(args)
+        if (outputJar != null && !outputJar.isEmpty()) {
+            args << '-outjar'
+            args << outputJar
+        }
+
+        if (ajcArgs != null && !ajcArgs.isEmpty()) {
+            if (!ajcArgs.contains('-Xlint')) {
+                args.add('-Xlint:ignore')
+            }
+            if (!ajcArgs.contains('-warn')) {
+                args.add('-warn:none')
+            }
+
+            args.addAll(ajcArgs)
+        } else {
+            args.add('-Xlint:ignore')
+            args.add('-warn:none')
+        }
+
 
         inPath.each { File file ->
             println "~~~~~~~~~~~~~input file: ${file.absolutePath}"
         }
 
         MessageHandler handler = new MessageHandler(true);
-        new Main().run(args, handler);
+        new Main().run(args.toArray(), handler);
         for (IMessage message : handler.getMessages(null, true)) {
             switch (message.getKind()) {
                 case IMessage.ABORT:
@@ -85,5 +113,6 @@ class AjxTask extends AbstractCompile {
                     break;
             }
         }
+        return null
     }
 }

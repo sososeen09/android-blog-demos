@@ -1,8 +1,5 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'android-aspectjx'
-
-//apply from :'../aspectj.gradle'
-
 apply plugin: 'com.sososeen09.aspectjx'
 
 android {

@@ -1,0 +1,45 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+group = LIB_GROUP
+version = LIB_VERSION
+project.archivesBaseName = LIB_ARTIFACT
+
+repositories {
+    google()
+    jcenter()
+}
+
+dependencies {
+    compile localGroovy()
+    compile gradleApi()
+    compile 'com.android.tools.build:gradle:3.1.2'
+    compile 'com.android.tools.build:transform-api:1.5.0'
+    compile files('libs/aspectjtools.jar')
+    compile 'com.google.code.gson:gson:2.8.2'
+}
+
+sourceSets {
+
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file:../aop-tech/repositories")
+        }
+    }
+}
