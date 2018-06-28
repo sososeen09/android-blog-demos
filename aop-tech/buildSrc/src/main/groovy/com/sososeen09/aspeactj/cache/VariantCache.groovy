@@ -4,6 +4,8 @@ import com.android.build.api.transform.QualifiedContent
 import com.android.builder.model.AndroidProject
 import com.google.common.collect.ImmutableSet
 import org.gradle.api.Project
+import org.gradle.internal.FileUtils
+
 /**
  * 该类用户管理Variant相关的缓存，如aspect class文件目录
  */
@@ -22,7 +24,7 @@ class VariantCache {
         this.project = proj
         this.variantName = variantName
         this.ajxCache = cache
-        this.ajxCache.put(variantName, this)
+//        this.ajxCache.put(variantName, this)
 
         init()
     }
@@ -47,5 +49,9 @@ class VariantCache {
     File getAspectDir() {
         return new File(aspectPath)
     }
+
+     void add(File sourceFile, File destFile) {
+         org.apache.commons.io.FileUtils.copyFile(sourceFile, destFile)
+     }
 
 }

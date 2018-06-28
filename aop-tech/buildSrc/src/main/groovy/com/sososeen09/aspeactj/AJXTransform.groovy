@@ -5,7 +5,7 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.pipeline.TransformTask
 import com.google.common.collect.ImmutableSet
 import com.google.common.io.ByteStreams
-import com.hujiang.gradle.plugin.android.aspectjx.internal.cache.VariantCache
+import com.sososeen09.aspeactj.cache.VariantCache
 import org.gradle.api.Project
 
 import java.util.jar.JarEntry
@@ -56,10 +56,9 @@ class AJXTransform extends Transform {
 
                     if (AjxUtils.isClassFile(item.name)) {
                         //如果是class文件，复制到build/intermediates/ajx/buildVariant/目录下
-
                         String path = item.absolutePath
                         String subPath = path.substring(dirInput.file.absolutePath.length())
-                        variantCache.add(item, new File((isInclude ? variantCache.includeFilePath : variantCache.excludeFilePath) + subPath))
+                        variantCache.add(item, new File(variantCache.cachePath, subPath))
 
                         if (AjxUtils.isAspectClass(item)) {
                             println "~~~~~~~~~~~~directoryInputs collect aspect file:${item.absolutePath}"
@@ -96,19 +95,19 @@ class AJXTransform extends Transform {
                 AjxTask ajxTask1 = new AjxTask(ajxProcedure.project)
 
                 //包含引入的library中的jar
-                ajxProcedure.ajxTask.aspectPath.add(jarInput.file)
-                println "~~~~~~~~~~~jarInputs collect dest file:${dest}"
+                ajxTask1.aspectPath.add(jarInput.file)
+                println "~~~~~~~~~~~jarInputs collect dest file:${outputJar}"
                 jarFile.close()
             }
         }
         //目前这些都不包含外部的library中的class文件
-        if (javaCompile.destinationDir.listFiles() != null) {
-            ajxTask.inPath.addAll(javaCompile.destinationDir.listFiles().toList())
-        }
-        ajxTask.aspectPath.addAll(javaCompile.classpath.getFiles())
-        ajxTask.classPath.addAll(javaCompile.classpath.getFiles())
-
-        ajxTask.outputDir = globalAjxCache.cachePath
-        ajxProcedure.ajxTask.call()
+//        if (javaCompile.destinationDir.listFiles() != null) {
+//            ajxTask.inPath.addAll(javaCompile.destinationDir.listFiles().toList())
+//        }
+//        ajxTask.aspectPath.addAll(javaCompile.classpath.getFiles())
+//        ajxTask.classPath.addAll(javaCompile.classpath.getFiles())
+//
+//        ajxTask.outputDir = globalAjxCache.cachePath
+//        ajxTask.call()
     }
 }
