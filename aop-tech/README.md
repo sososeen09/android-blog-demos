@@ -38,9 +38,6 @@ dependencies {
 }
 ```
 
-**疑问**
-1. 沪江的这个插件中并没有在library 中引入，那么是如何做到把library中的class文件也按照aspeactj进行处理了呢？
-
 ## 自己接入aspectj
 
 在项目根目录build.gradle下引入aspectjtools插件：
@@ -163,6 +160,47 @@ android.libraryVariants.all { variant ->
 }
 ```
 
+# 问题
+1. 如何处理kotlin下的编译
+    - 利用Transform API，处理编译后的.class文件，所以对于kotlin或者java编译来说都不影响
+
+2. 对于subproject library，实际上也是先编译成aar，然后再main project中处理响应的class。那么aspectx是怎么处理jar包中的aspect呢？
+可以按照outjar来处理
+
+# 执行Aspect相关参数说明
+
+1 **-sourceRoots:**
+ Find and build all .java or .aj source files under any directory listed in DirPaths. DirPaths, like classpath, is a single argument containing a list of paths to directories, delimited by the platform- specific classpath delimiter. Required by -incremental.
+ 
+2 **-inpath:**
+ Accept as source bytecode any .class files in the .jar files or directories on Path. The output will include these classes, possibly as woven with any applicable aspects. Path is a single argument containing a list of paths to zip files or directories, delimited by the platform-specific path delimiter.
+
+class文件路径，这个路径应该包含那些Aspect相关的文件，只有这些文件才会被aspect处理
+
+3 **-classpath:**
+ Specify where to find user class files. Path is a single argument containing a list of paths to zip files or directories, delimited by the platform-specific path delimiter.
+ classpath 是编译的时候需要用到的class文件路径
+
+4 **-aspectPath:**
+ Weave binary aspects from jar files and directories on path into all sources. The aspects should have been output by the same version of the compiler. When running the output classes, the run classpath should contain all aspectpath entries. Path, like classpath, is a single argument containing a list of paths to jar files, delimited by the platform- specific classpath delimiter.
+ 
+ 被@Aspect注解标示的class文件路径
+
+5 **-bootClasspath:**
+ Override location of VM's bootClasspath for purposes of evaluating types when compiling. Path is a single argument containing a list of paths to zip files or directories, delimited by the platform-specific path delimiter.
+
+跟VM相关的classpath，例如在Android中使用android-27的源码进行编译
+
+6 **-d:**
+ Specify where to place generated .class files. If not specified, Directory defaults to the current working dir.
+
+由aspecttools处理后的class或者jar包存放目录
+
+7 **-preserveAllLocals:**
+ Preserve all local variables during code generation (to facilitate debugging).
+
+更多详情请查看[官网](http://www.eclipse.org/aspectj/doc/released/devguide/ajc-ref.html) http://www.eclipse.org/aspectj/doc/released/devguide/ajc-ref.html
+
 # 相关
 - [HujiangTechnology / gradle_plugin_android_aspectjx](https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx)
 - [north2016 / T-MVP](https://github.com/north2016/T-MVP)
@@ -170,3 +208,4 @@ android.libraryVariants.all { variant ->
 - [深入理解Android之AOP](https://blog.csdn.net/innost/article/details/49387395)
 - [安卓AOP三剑客:APT,AspectJ,Javassist](https://www.jianshu.com/p/dca3e2c8608a)
 - [AspectJ在Android中的应用](http://www.goluck.top/2017/06/11/AspectJ%E5%9C%A8Android%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/)
+- [devguide:ajc-ref](http://www.eclipse.org/aspectj/doc/released/devguide/ajc-ref.html)
