@@ -44,6 +44,9 @@ class AjxTask implements ITask {
         // -preserveAllLocals:
         //  Preserve all local variables during code generation (to facilitate debugging).
 
+        // Although types in the inpath and the aspectpath need to be resolved by the AspectJ tools,
+        // you usually do not need to place them on the classpath because this is done automatically by the compiler/weaver.
+        // But when using the WeavingURLClassLoader, your code must explicitly add the aspects to the classpath so they can be resolved (as you'll see in the sample code and the aj.bat script).
         def args = [
                 "-showWeaveInfo",
                 "-encoding", encoding,

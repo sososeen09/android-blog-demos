@@ -199,6 +199,8 @@ class文件路径，这个路径应该包含那些Aspect相关的文件，只有
 7 **-preserveAllLocals:**
  Preserve all local variables during code generation (to facilitate debugging).
 
+默认情况下，inPath和aspectPath中的路径不一定非要放置在classPath中，因为编译器会自动处理把它们加入。详情查看 http://www.eclipse.org/aspectj/doc/released/devguide/bytecode-concepts.html
+
 更多详情请查看[官网](http://www.eclipse.org/aspectj/doc/released/devguide/ajc-ref.html) http://www.eclipse.org/aspectj/doc/released/devguide/ajc-ref.html
 
 # 相关

@@ -49,6 +49,7 @@ class AjxTaskProcess {
         }
 
         // inpath表示要处理的class，这个应该是每个Task独有的，因为不同的Task处理的class不同
+        // 默认情况下，inPath和aspectPath中的路径不一定非要放置在classPath中，因为编译器会自动处理把它们加入
         ajxTask.inPath << variantCache.includeFileDir
 
         ajxTask.sourceCompatibility = ajxTaskManager.sourceCompatibility
