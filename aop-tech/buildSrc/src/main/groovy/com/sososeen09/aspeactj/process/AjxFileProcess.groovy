@@ -39,6 +39,8 @@ class AjxFileProcess {
                         //如果是class文件，复制到build/intermediates/ajx/buildVariant/目录下
                         String path = item.absolutePath
                         String subPath = path.substring(dirInput.file.absolutePath.length())
+                        //只要是.class文件就要添加到includeFilePath路径下
+                        variantCache.add(item, new File(variantCache.includeFilePath, subPath))
                         //对于项目中的所有的class最终需要复制到build/intermediates/transform/ajx目录下，以便于进行后续的transform操作
                         //这个过程也可以在aspectj处理class的时候使用
                         if (AjxUtils.isAspectClass(item)) {
@@ -47,8 +49,6 @@ class AjxFileProcess {
                             //如果是@Aspect注解的class文件，复制到build/intermediates/ajx/buildVariant/aspects目录下
                             File cacheFile = new File(variantCache.aspectPath, subPath)
                             variantCache.add(item, cacheFile)
-                        } else {
-                            variantCache.add(item, new File(variantCache.includeFilePath, subPath))
                         }
                     }
                 }

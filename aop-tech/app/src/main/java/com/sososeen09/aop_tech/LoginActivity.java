@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.sososeen09.aop_tech.aspect.TimeSpend;
 
 /**
  * A login screen that offers login via email/password.
@@ -52,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
     }
 
+    @TimeSpend("登录")
     private void attemptLogin() {
         StatusHolder.sHasLogin = true;
         Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();

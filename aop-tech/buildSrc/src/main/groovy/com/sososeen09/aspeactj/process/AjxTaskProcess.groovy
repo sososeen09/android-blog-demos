@@ -37,7 +37,6 @@ class AjxTaskProcess {
         ajxTaskManager.aspectPath << variantCache.aspectDir
         ajxTaskManager.classPath << variantCache.includeFileDir
 
-
         AjxTask ajxTask = new AjxTask(project)
         //classpath error: unable to find org.aspectj.lang.JoinPoint (check that aspectjrt.jar is in your classpath)
         ajxTask.classPath = ajxTaskManager.classPath

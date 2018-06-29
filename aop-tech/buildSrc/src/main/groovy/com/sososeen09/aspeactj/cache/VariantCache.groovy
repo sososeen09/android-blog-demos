@@ -15,7 +15,7 @@ class VariantCache {
 
     String cachePath
     String aspectPath
-    //为了区分带有aspect的目录和不带aspect的目录，用includeFilePath表示不带aspect
+    //includeFilePath要包含带有@Aspect的路径 是aspectPath的超集
     String includeFilePath
 
     Set<QualifiedContent.ContentType> includeFileContentTypes

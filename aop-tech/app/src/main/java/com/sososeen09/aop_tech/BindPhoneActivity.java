@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
+import com.sososeen09.aop_tech.aspect.TimeSpend;
 
 public class BindPhoneActivity extends AppCompatActivity {
 
@@ -15,10 +16,15 @@ public class BindPhoneActivity extends AppCompatActivity {
         findViewById(R.id.btn_bind).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StatusHolder.sHasBindPhone = true;
-                Toast.makeText(BindPhoneActivity.this, "绑定手机号成功", Toast.LENGTH_SHORT).show();
-                finish();
+                attemptBind();
             }
         });
+    }
+
+    @TimeSpend("绑定手机号")
+    private void attemptBind() {
+        StatusHolder.sHasBindPhone = true;
+        Toast.makeText(BindPhoneActivity.this, "绑定手机号成功", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }
