@@ -3,9 +3,8 @@ package com.sososeen09.aspeactj.cache
 import com.android.build.api.transform.QualifiedContent
 import com.android.builder.model.AndroidProject
 import com.google.common.collect.ImmutableSet
+import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
-import org.gradle.internal.FileUtils
-
 /**
  * 该类用户管理Variant相关的缓存，如aspect class文件目录
  */
@@ -16,7 +15,11 @@ class VariantCache {
 
     String cachePath
     String aspectPath
+    //为了区分带有aspect的目录和不带aspect的目录，用includeFilePath表示不带aspect
+    String includeFilePath
 
+    Set<QualifiedContent.ContentType> includeFileContentTypes
+    Set<QualifiedContent.Scope> includeFileScopes
     Set<QualifiedContent.ContentType> contentTypes = ImmutableSet.<QualifiedContent.ContentType>of(QualifiedContent.DefaultContentType.CLASSES)
     Set<QualifiedContent.Scope> scopes = ImmutableSet.<QualifiedContent.Scope>of(QualifiedContent.Scope.EXTERNAL_LIBRARIES)
 
@@ -31,8 +34,8 @@ class VariantCache {
 
     private void init() {
         cachePath = project.buildDir.absolutePath + File.separator + AndroidProject.FD_INTERMEDIATES + "/ajx/" + variantName
-        aspectPath = cachePath + File.separator + "aspecs"
-
+        aspectPath = cachePath + File.separator + "aspects"
+        includeFilePath = cachePath + File.separator + "includefiles"
         if (!aspectDir.exists()) {
             aspectDir.mkdirs()
         }
@@ -50,8 +53,25 @@ class VariantCache {
         return new File(aspectPath)
     }
 
-     void add(File sourceFile, File destFile) {
-         org.apache.commons.io.FileUtils.copyFile(sourceFile, destFile)
-     }
+    File getIncludeFileDir() {
+        return new File(includeFilePath)
+    }
+
+    void add(File sourceFile, File cacheFile) {
+        if (sourceFile == null || cacheFile == null) {
+            return
+        }
+
+        byte[] bytes = FileUtils.readFileToByteArray(sourceFile)
+        add(bytes, cacheFile)
+    }
+
+    void add(byte[] classBytes, File cacheFile) {
+        if (classBytes == null || cacheFile == null) {
+            return
+        }
+
+        FileUtils.writeByteArrayToFile(cacheFile, classBytes)
+    }
 
 }

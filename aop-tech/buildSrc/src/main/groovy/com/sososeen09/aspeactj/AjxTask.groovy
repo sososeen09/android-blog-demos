@@ -94,7 +94,7 @@ class AjxTask implements ITask {
         }
 
         MessageHandler handler = new MessageHandler(true);
-        new Main().run(args.toArray(), handler);
+        new Main().run(args as String[], handler);
         for (IMessage message : handler.getMessages(null, true)) {
             switch (message.getKind()) {
                 case IMessage.ABORT:
