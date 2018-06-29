@@ -1,9 +1,11 @@
-package com.sososeen09.aspeactj
+package com.sososeen09.aspeactj.process
 
 import com.android.build.api.transform.Format
 import com.android.build.api.transform.JarInput
 import com.android.build.api.transform.TransformInput
 import com.android.build.api.transform.TransformInvocation
+import com.sososeen09.aspeactj.AjxTask
+import com.sososeen09.aspeactj.TaskManager
 import com.sososeen09.aspeactj.cache.VariantCache
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
@@ -61,6 +63,8 @@ class AjxTaskProcess {
         transformInvocation.inputs.each { TransformInput input ->
             input.jarInputs.each { JarInput jarInput ->
                 ajxTaskManager.classPath << jarInput.file
+                // getContentLocation方法相当于创建一个对应名称表示的目录
+                // 是从0 、1、2开始递增。如果是目录，名称就是对应的数字，如果是jar包就类似0.jar
                 File outputJar = transformInvocation.outputProvider.getContentLocation(jarInput.name
                         , jarInput.contentTypes
                         , jarInput.scopes

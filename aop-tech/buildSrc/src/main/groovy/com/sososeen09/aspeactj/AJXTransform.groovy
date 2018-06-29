@@ -5,6 +5,8 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.pipeline.TransformTask
 import com.google.common.collect.ImmutableSet
 import com.sososeen09.aspeactj.cache.VariantCache
+import com.sososeen09.aspeactj.process.AjxFileProcess
+import com.sososeen09.aspeactj.process.AjxTaskProcess
 import org.gradle.api.Project
 
 
