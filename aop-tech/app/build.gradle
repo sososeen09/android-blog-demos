@@ -32,3 +32,18 @@ dependencies {
 
     implementation project(":status-check")
 }
+
+gradle.getTaskGraph().whenReady {
+    project.tasks.all {
+        Task t = it;
+        String taskName = it.name
+        println("--------taskName-----------:" + taskName + " taskClass: " + it.class.name)
+        it.getTaskDependencies().any {
+            println("----------------dependsOn-----------------:")
+            it.getDependencies(t).findAll() {
+                println("----------------------------------:" + it.getPath() + " taskClass: " + it.class.name)
+            }
+        }
+
+    }
+}
