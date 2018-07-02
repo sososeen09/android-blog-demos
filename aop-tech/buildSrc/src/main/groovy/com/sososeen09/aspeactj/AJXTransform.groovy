@@ -1,14 +1,16 @@
 package com.sososeen09.aspeactj
 
-import com.android.build.api.transform.*
+import com.android.build.api.transform.QualifiedContent
+import com.android.build.api.transform.Transform
+import com.android.build.api.transform.TransformException
+import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.pipeline.TransformTask
 import com.google.common.collect.ImmutableSet
 import com.sososeen09.aspeactj.cache.VariantCache
-import com.sososeen09.aspeactj.process.AjxFileProcess
-import com.sososeen09.aspeactj.process.AjxTaskProcess
+import com.sososeen09.aspeactj.process.AJXFileProcess
+import com.sososeen09.aspeactj.process.AJXTaskProcess
 import org.gradle.api.Project
-
 
 class AJXTransform extends Transform {
 
@@ -44,15 +46,22 @@ class AJXTransform extends Transform {
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         TransformTask transformTask = (TransformTask) transformInvocation.context
-        //VariantCache 就是保存一些跟当前variant相关的一些缓存
+        //VariantCache 就是保存一些跟当前variant相关的一些缓存，以及在支持增量编译的情况下存储一些信息
         VariantCache variantCache = new VariantCache(ajxProcedure.project, ajxProcedure.ajxCache, transformTask.variantName)
 
-        AjxFileProcess ajxFileProcess = new AjxFileProcess(project, variantCache, transformInvocation)
+        if (transformInvocation.isIncremental()) {
+            //TODO 增量
+            print("====================增量编译=================")
+        }else {
+            print("====================非增量编译=================")
+            //非增量,需要删除输出目录
+//            variantCache.reset()
+//            transformInvocation.outputProvider.deleteAll()
+        }
 
+        AJXFileProcess ajxFileProcess = new AJXFileProcess(project, variantCache, transformInvocation)
         ajxFileProcess.proceed()
-
-        AjxTaskProcess ajxTaskProcess = new AjxTaskProcess(project, variantCache, transformInvocation)
-
+        AJXTaskProcess ajxTaskProcess = new AJXTaskProcess(project, variantCache, transformInvocation)
         ajxTaskProcess.proceed()
     }
 }

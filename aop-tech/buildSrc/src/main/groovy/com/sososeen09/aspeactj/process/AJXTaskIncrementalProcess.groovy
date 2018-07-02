@@ -11,14 +11,17 @@ import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 
 
-class AjxTaskProcess {
+/**
+ * 增量的任务执行
+ */
+class AJXTaskIncrementalProcess {
     Project project
     VariantCache variantCache
     TransformInvocation transformInvocation
 
     TaskManager ajxTaskManager
 
-    AjxTaskProcess(Project project, VariantCache variantCache, TransformInvocation transformInvocation) {
+    AJXTaskIncrementalProcess(Project project, VariantCache variantCache, TransformInvocation transformInvocation) {
         this.project = project
         this.variantCache = variantCache
         this.transformInvocation = transformInvocation
@@ -72,9 +75,6 @@ class AjxTaskProcess {
                 if (!outputJar.getParentFile()?.exists()) {
                     outputJar.getParentFile()?.mkdirs()
                 }
-                //复制jar包到build/intermediates/transform/ajx目录下
-                FileUtils.copyFile(jarInput.file, outputJar)
-
                 //包含引入的library中的jar
                 println "~~~~~~~~~~~jarInputs collect dest file:${outputJar}"
 

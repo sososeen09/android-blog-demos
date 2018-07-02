@@ -15,12 +15,12 @@ import java.util.jar.JarFile
 /**
  * 用于解析class文件和相关的jar包
  */
-class AjxFileProcess {
+class AJXFileProcess {
     Project project
     VariantCache variantCache
     TransformInvocation transformInvocation
 
-    AjxFileProcess(Project project, VariantCache variantCache, TransformInvocation transformInvocation) {
+    AJXFileProcess(Project project, VariantCache variantCache, TransformInvocation transformInvocation) {
         this.project = project
         this.variantCache = variantCache
         this.transformInvocation = transformInvocation
