@@ -6,7 +6,7 @@ import com.sososeen09.aspeactj.internal.TaskTimeListener
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class AjxPlugin implements Plugin<Project> {
+class AJXPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {

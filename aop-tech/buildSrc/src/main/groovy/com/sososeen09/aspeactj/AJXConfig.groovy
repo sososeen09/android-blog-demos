@@ -8,14 +8,14 @@ import org.gradle.api.DomainObjectCollection
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 
-class AjxConfig {
+class AJXConfig {
 
     private final Project project
     private final boolean hasAppPlugin
     private final boolean hasLibPlugin
     private final BasePlugin plugin
 
-    AjxConfig(Project project) {
+    AJXConfig(Project project) {
         this.project = project
         this.hasAppPlugin = project.plugins.hasPlugin(AppPlugin)
         this.hasLibPlugin = project.plugins.hasPlugin(LibraryPlugin)

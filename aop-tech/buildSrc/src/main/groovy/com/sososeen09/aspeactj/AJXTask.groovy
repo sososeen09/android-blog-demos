@@ -5,7 +5,7 @@ import org.aspectj.bridge.MessageHandler
 import org.aspectj.tools.ajc.Main
 import org.gradle.api.Project
 
-class AjxTask implements ITask {
+class AJXTask implements ITask {
     Project project
     ArrayList<File> inPath = new ArrayList<>()
     ArrayList<File> aspectPath = new ArrayList<>()
@@ -19,7 +19,7 @@ class AjxTask implements ITask {
     String outputDir
     String outputJar
 
-    AjxTask(Project proj) {
+    AJXTask(Project proj) {
         project = proj
     }
 
