@@ -167,6 +167,9 @@ android.libraryVariants.all { variant ->
 2. 对于subproject library，实际上也是先编译成aar，然后再main project中处理响应的class。那么aspectx是怎么处理jar包中的aspect呢？
 可以按照outjar来处理
 
+3. Transform API的依赖关系，Transform 对应的是TransformTask，TransformTask方法在执行的时候会调用Transform的transform方法。
+TransformTask的依赖关系是由Task的输入和输出隐式确定的。相关的类有TransformManager、TransformStream、TransformTask。
+
 # 执行Aspect相关参数说明
 
 1 **-sourceRoots:**
