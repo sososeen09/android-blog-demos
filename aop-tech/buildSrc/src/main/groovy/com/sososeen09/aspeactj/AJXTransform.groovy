@@ -55,13 +55,14 @@ class AJXTransform extends Transform {
         }else {
             print("====================非增量编译=================")
             //非增量,需要删除输出目录
-//            variantCache.reset()
-//            transformInvocation.outputProvider.deleteAll()
+            transformInvocation.outputProvider.deleteAll()
+            variantCache.reset()
+
+            AJXFileProcess ajxFileProcess = new AJXFileProcess(project, variantCache, transformInvocation)
+            ajxFileProcess.proceed()
+            AJXTaskProcess ajxTaskProcess = new AJXTaskProcess(project, variantCache, transformInvocation)
+            ajxTaskProcess.proceed()
         }
 
-        AJXFileProcess ajxFileProcess = new AJXFileProcess(project, variantCache, transformInvocation)
-        ajxFileProcess.proceed()
-        AJXTaskProcess ajxTaskProcess = new AJXTaskProcess(project, variantCache, transformInvocation)
-        ajxTaskProcess.proceed()
     }
 }

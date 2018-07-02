@@ -33,17 +33,18 @@ dependencies {
     implementation project(":status-check")
 }
 
-gradle.getTaskGraph().whenReady {
-    project.tasks.all {
-        Task t = it;
-        String taskName = it.name
-        println("--------taskName-----------:" + taskName + " taskClass: " + it.class.name)
-        it.getTaskDependencies().any {
-            println("----------------dependsOn-----------------:")
-            it.getDependencies(t).findAll() {
-                println("----------------------------------:" + it.getPath() + " taskClass: " + it.class.name)
-            }
-        }
-
-    }
-}
+// 执行该监听，会使apk中无法打包dex文件，尚不清楚怎么回事
+//gradle.getTaskGraph().whenReady {
+//    project.tasks.all {
+//        Task t = it;
+//        String taskName = it.name
+//        println("--------taskName-----------:" + taskName + " taskClass: " + it.class.name)
+//        it.getTaskDependencies().any {
+//            println("----------------dependsOn-----------------:")
+//            it.getDependencies(t).findAll() {
+//                println("----------------------------------:" + it.getPath() + " taskClass: " + it.class.name)
+//            }
+//        }
+//
+//    }
+//}
