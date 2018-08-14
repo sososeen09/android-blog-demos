@@ -5,7 +5,7 @@ import org.apache.commons.io.FileUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 
-class AjxUtils {
+class AJXUtils {
     static boolean isAspectClass(File classFile) {
 
         if (isClassFile(classFile.name)) {

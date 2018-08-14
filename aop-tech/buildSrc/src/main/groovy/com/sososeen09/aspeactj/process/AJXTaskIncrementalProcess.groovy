@@ -4,21 +4,24 @@ import com.android.build.api.transform.Format
 import com.android.build.api.transform.JarInput
 import com.android.build.api.transform.TransformInput
 import com.android.build.api.transform.TransformInvocation
-import com.sososeen09.aspeactj.AjxTask
+import com.sososeen09.aspeactj.AJXTask
 import com.sososeen09.aspeactj.TaskManager
 import com.sososeen09.aspeactj.cache.VariantCache
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 
 
-class AjxTaskProcess {
+/**
+ * 增量的任务执行
+ */
+class AJXTaskIncrementalProcess {
     Project project
     VariantCache variantCache
     TransformInvocation transformInvocation
 
     TaskManager ajxTaskManager
 
-    AjxTaskProcess(Project project, VariantCache variantCache, TransformInvocation transformInvocation) {
+    AJXTaskIncrementalProcess(Project project, VariantCache variantCache, TransformInvocation transformInvocation) {
         this.project = project
         this.variantCache = variantCache
         this.transformInvocation = transformInvocation
@@ -37,7 +40,7 @@ class AjxTaskProcess {
         ajxTaskManager.aspectPath << variantCache.aspectDir
         ajxTaskManager.classPath << variantCache.includeFileDir
 
-        AjxTask ajxTask = new AjxTask(project)
+        AJXTask ajxTask = new AJXTask(project)
         //classpath error: unable to find org.aspectj.lang.JoinPoint (check that aspectjrt.jar is in your classpath)
         ajxTask.classPath = ajxTaskManager.classPath
         ajxTask.aspectPath = ajxTaskManager.aspectPath
@@ -72,14 +75,11 @@ class AjxTaskProcess {
                 if (!outputJar.getParentFile()?.exists()) {
                     outputJar.getParentFile()?.mkdirs()
                 }
-                //复制jar包到build/intermediates/transform/ajx目录下
-                FileUtils.copyFile(jarInput.file, outputJar)
-
                 //包含引入的library中的jar
                 println "~~~~~~~~~~~jarInputs collect dest file:${outputJar}"
 
                 //对每一个jar包都创建一个任务用于处理jar包中的class文件
-                AjxTask ajxTask1 = new AjxTask(project)
+                AJXTask ajxTask1 = new AJXTask(project)
                 ajxTask1.sourceCompatibility = ajxTaskManager.sourceCompatibility
                 ajxTask1.targetCompatibility = ajxTaskManager.targetCompatibility
                 ajxTask1.encoding = ajxTaskManager.encoding

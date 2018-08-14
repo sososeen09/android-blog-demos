@@ -74,4 +74,13 @@ class VariantCache {
         FileUtils.writeByteArrayToFile(cacheFile, classBytes)
     }
 
+    void reset() {
+        close()
+
+        init()
+    }
+
+    void close() {
+        FileUtils.deleteDirectory(cacheDir)
+    }
 }

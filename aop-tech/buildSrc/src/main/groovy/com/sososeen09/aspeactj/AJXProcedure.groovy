@@ -12,7 +12,7 @@ class AJXProcedure {
     AJXProcedure(Project project) {
         this.project = project
         //创建配置类，就是为了获取是AppPlugin 还是LibraryPlugin，提供方法返回它们的基类BaseVariant，返回bootClasspath
-        def config = new AjxConfig(project)
+        def config = new AJXConfig(project)
 
         //缓存，就是为了把class文件输出到build/intermediates/ajx 目录下，包括依赖的aar中的class文件
         //缓存中的encoding、bootClassPath、sourceCompatibility、targetCompatibility 等都是为aspectj准备的
