@@ -1,0 +1,132 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:id="@+id/navigation1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ECF0F2"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal" >
+        <EditText
+            android:id="@+id/editUrl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:singleLine="true"
+            android:textSize="35px" 
+            android:hint="请输入网址...">
+        </EditText>
+
+        <Button
+            android:id="@+id/btnGo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="3dp"
+            android:background="#ECF0F2"
+            android:linksClickable="false"
+            android:text="GO"
+            android:textSize="35px"
+            android:visibility="gone" />
+                  
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp" />
+
+   <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@+id/webView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </FrameLayout>
+        <TextView
+            android:id="@+id/logView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:singleLine="false">
+        </TextView>
+
+     
+        
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/toolbar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ECF0F2"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/btnBack1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.5dp"
+            android:layout_weight="1"
+            android:background="#ECF0F2"
+            android:padding="10dp"
+            android:src="@drawable/theme_toolbar_btn_back_fg_normal0" />
+
+        <ImageButton
+            android:id="@+id/btnForward1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.5dp"
+            android:layout_weight="1"
+            android:background="#ECF0F2"
+            android:padding="10dp"
+            android:src="@drawable/theme_toolbar_btn_forward_fg_normal0" />
+        
+        <ImageButton
+            android:id="@+id/btnMore"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0dp"
+            android:layout_weight="1"
+            android:background="#ECF0F2"
+            android:padding="10dp"
+            android:src="@drawable/theme_toolbar_btn_menu_fg_normal" />
+
+        <ImageButton
+            android:id="@+id/btnHome1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.5dp"
+            android:layout_weight="1"
+            android:background="#ECF0F2"
+            android:padding="10dp"
+            android:src="@drawable/theme_toolbar_btn_home_fg_normal2" />
+
+        <ImageButton
+            android:id="@+id/btnExit1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.5dp"
+            android:layout_weight="1"
+            android:background="#ECF0F2"
+            android:padding="10dp"
+            android:src="@drawable/theme_menu_btn_quit_fg_normal0" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <com.example.test_webview_demo.utils.X5WebView 
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:id="@+id/full_web_webview"
+        android:scrollbars="horizontal"
+        ></com.example.test_webview_demo.utils.X5WebView>
+    
+    	
+
+</RelativeLayout>

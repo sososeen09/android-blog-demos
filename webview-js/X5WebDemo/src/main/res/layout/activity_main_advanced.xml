@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/tip"
+        android:textColor="#ff0000"
+        android:textIsSelectable="false"
+        android:textSize="10sp" />
+
+    <RelativeLayout
+        android:id="@+id/first_Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tip"
+        android:background="#ffffff" >
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/tag"
+            android:textColor="@android:color/black"
+            android:textIsSelectable="false"
+            android:textSize="15sp"
+            android:textStyle="italic" />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/item_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/first_Text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
+        android:background="#ebebeb"
+        android:gravity="center_horizontal"
+        android:horizontalSpacing="1dp"
+        android:numColumns="3"
+        android:paddingTop="1dp"
+        android:verticalSpacing="1dp" />
+
+</RelativeLayout>
