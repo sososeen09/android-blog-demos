@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>webview与native交互</title>
+
+	<style>
+		div{
+			text-align: center;
+			width:300px;
+			margin:0 auto;
+			height: 50px;
+		}
+	</style>
+
+	<script type="text/javascript" language="javascript">
+		function webviewToNative(){
+			var username=document.getElementById("user").value;
+			var password=document.getElementById("pwd").value;
+			jsInterface.onWebviewToNative(username, password);
+		}
+
+		function nativeToWebview(){
+			var text = jsInterface.onNativeToWebview("从JS传递的文本");
+			console.log(text);
+			alert(text);
+		}
+		
+	</script>
+
+	
+	<div>
+		用户名： <input id="user" type="text">
+	</div>
+	<div>
+		密码：<input id="pwd" type="password">
+	</div>
+
+	<div>
+
+	</div>
+	<div>
+		<button onclick="nativeToWebview()">native发送数据到webview</button>
+	</div>
+	
+	<div>
+		<button onclick="webviewToNative()">点击webview中按钮向Native传递数据</button>
+	</div>
+	
+</head>
+<body>
+	
+</body>
+</html>
