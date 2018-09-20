@@ -1,1 +1,1 @@
-include ':app', ':status-check'/*, ':app-kotlin'*//*,':gradle-android-plugin-aspectjx'*/
+include ':app', ':status-check', ':activity-checker', ':activity-checker-sample'/*, ':app-kotlin'*//*,':gradle-android-plugin-aspectjx'*/

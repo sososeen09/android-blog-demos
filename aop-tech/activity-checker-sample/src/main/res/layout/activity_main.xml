@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btn_activity_2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="跳转到Activity2 需要登录"
+        android:textAllCaps="false"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btn_activity_3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="跳转到Activity3 需要绑定手机号"
+        android:textAllCaps="false"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btn_activity_4"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="跳转到Activity4 需要登录和绑定手机号"
+        android:textAllCaps="false"
+        android:textSize="12sp" />
+
+
+    <TextView
+        android:id="@+id/tv_show_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="状态" />
+
+    <Button
+        android:id="@+id/btn_reset"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="重置"
+        android:textAllCaps="false"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btn_test_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="在Fragment中测试"
+        android:textAllCaps="false"
+        android:textSize="12sp" />
+</LinearLayout>
