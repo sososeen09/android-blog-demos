@@ -11,5 +11,7 @@ dependencies {
     compile files('libs/aspectjtools.jar')
     compile 'org.aspectj:aspectjweaver:1.8.8'
     compile 'com.google.code.gson:gson:2.8.2'
+    //javassist https://github.com/jboss-javassist/javassist
+    compile 'org.javassist:javassist:3.20.0-GA'
 }
 

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'android-aspectjx'
+apply plugin: 'com.sososeen09.javassistplugin'
 apply plugin: 'com.sososeen09.aspectjx'
 
 android {
@@ -20,8 +21,15 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs './libs'
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation "com.android.support:design:$supportVersion"

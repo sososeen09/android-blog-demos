@@ -24,11 +24,11 @@ public class WebViewEx extends WebView {
 
     private void init() {
         //设置WebChromeClient之后网页才能弹出alert
-        setWebChromeClient(new WebChromeClient(){
-            @Override
-            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                return super.onJsAlert(view, url, message, result);
-            }
-        });
+//        setWebChromeClient(new WebChromeClient(){
+//            @Override
+//            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+//                return super.onJsAlert(view, url, message, result);
+//            }
+//        });
     }
 }
