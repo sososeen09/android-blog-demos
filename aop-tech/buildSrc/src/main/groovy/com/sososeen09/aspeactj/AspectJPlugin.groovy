@@ -6,7 +6,7 @@ import com.sososeen09.aspeactj.internal.TaskTimeListener
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class AJXPlugin implements Plugin<Project> {
+class AspectJPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
@@ -22,7 +22,7 @@ class AJXPlugin implements Plugin<Project> {
         if (project.plugins.hasPlugin(AppPlugin)) {
             project.gradle.addListener(new TaskTimeListener())
             AppExtension android = project.extensions.getByType(AppExtension)
-            android.registerTransform(new AJXTransform(project))
+            android.registerTransform(new AspectJTransform(project))
         }
     }
 }

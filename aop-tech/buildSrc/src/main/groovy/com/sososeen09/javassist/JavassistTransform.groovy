@@ -9,7 +9,6 @@ import com.android.build.api.transform.TransformException
 import com.android.build.api.transform.TransformInput
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.android.build.gradle.internal.pipeline.TransformTask
 import com.google.common.collect.ImmutableSet
 import javassist.ClassPool
 import org.apache.commons.io.FileUtils
@@ -53,7 +52,7 @@ class JavassistTransform extends Transform {
             input.jarInputs.each { JarInput jarInput ->
 
                 //jar文件一般是第三方依赖库jar文件
-                MyInject.injectDir(jarInput.file.absolutePath,"com/sososeen09",project)
+                JavassistInject.injectDir(jarInput.file.absolutePath,"com/sososeen09",project)
                 // 重命名输出文件（同目录copyFile会冲突）
                 def jarName = jarInput.name
 //                def md5Name = DigestUtils.md5Hex(jarInput.file.getAbsolutePath())
@@ -72,7 +71,7 @@ class JavassistTransform extends Transform {
                 //文件夹里面包含的是我们手写的类以及R.class、BuildConfig.class以及R$XXX.class等
 
                 //文件夹里面包含的是我们手写的类以及R.class、BuildConfig.class以及R$XXX.class等
-                MyInject.injectDir(directoryInput.file.absolutePath,"com/sososeen09",project)
+                JavassistInject.injectDir(directoryInput.file.absolutePath,"com/sososeen09",project)
 
                 // 获取output目录
                 def dest = transformInvocation.outputProvider.getContentLocation(directoryInput.name,

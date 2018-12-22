@@ -8,14 +8,14 @@ import org.gradle.api.DomainObjectCollection
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 
-class AJXConfig {
+class AspectJConfig {
 
     private final Project project
     private final boolean hasAppPlugin
     private final boolean hasLibPlugin
     private final BasePlugin plugin
 
-    AJXConfig(Project project) {
+    AspectJConfig(Project project) {
         this.project = project
         this.hasAppPlugin = project.plugins.hasPlugin(AppPlugin)
         this.hasLibPlugin = project.plugins.hasPlugin(LibraryPlugin)

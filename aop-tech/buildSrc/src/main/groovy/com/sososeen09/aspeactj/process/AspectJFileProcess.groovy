@@ -5,7 +5,7 @@ import com.android.build.api.transform.JarInput
 import com.android.build.api.transform.TransformInput
 import com.android.build.api.transform.TransformInvocation
 import com.google.common.io.ByteStreams
-import com.sososeen09.aspeactj.AJXUtils
+import com.sososeen09.aspeactj.AspectJUtils
 import com.sososeen09.aspeactj.cache.VariantCache
 import org.gradle.api.Project
 
@@ -15,12 +15,12 @@ import java.util.jar.JarFile
 /**
  * 用于解析class文件和相关的jar包
  */
-class AJXFileProcess {
+class AspectJFileProcess {
     Project project
     VariantCache variantCache
     TransformInvocation transformInvocation
 
-    AJXFileProcess(Project project, VariantCache variantCache, TransformInvocation transformInvocation) {
+    AspectJFileProcess(Project project, VariantCache variantCache, TransformInvocation transformInvocation) {
         this.project = project
         this.variantCache = variantCache
         this.transformInvocation = transformInvocation
@@ -33,7 +33,7 @@ class AJXFileProcess {
                 variantCache.includeFileScopes = dirInput.scopes
 
                 dirInput.file.eachFileRecurse { File item ->
-                    if (AJXUtils.isClassFile(item.name)) {
+                    if (AspectJUtils.isClassFile(item.name)) {
                         //如果是class文件，复制到build/intermediates/ajx/buildVariant/目录下
                         String path = item.absolutePath
                         String subPath = path.substring(dirInput.file.absolutePath.length())
@@ -41,7 +41,7 @@ class AJXFileProcess {
                         variantCache.add(item, new File(variantCache.includeFilePath, subPath))
                         //对于项目中的所有的class最终需要复制到build/intermediates/transform/ajx目录下，以便于进行后续的transform操作
                         //这个过程也可以在aspectj处理class的时候使用
-                        if (AJXUtils.isAspectClass(item)) {
+                        if (AspectJUtils.isAspectClass(item)) {
                             println "~~~~~~~~~~~~directoryInputs collect aspect file:${item.absolutePath}"
                             println "~~~~~~~~~~~~directoryInputs collect aspect file subPath: ${subPath}"
                             //如果是@Aspect注解的class文件，复制到build/intermediates/ajx/buildVariant/aspects目录下
@@ -59,9 +59,9 @@ class AJXFileProcess {
                 while (entries.hasMoreElements()) {
                     JarEntry jarEntry = entries.nextElement()
                     String entryName = jarEntry.getName()
-                    if (!jarEntry.isDirectory() && AJXUtils.isClassFile(entryName)) {
+                    if (!jarEntry.isDirectory() && AspectJUtils.isClassFile(entryName)) {
                         byte[] bytes = ByteStreams.toByteArray(jarFile.getInputStream(jarEntry))
-                        if (AJXUtils.isAspectClass(bytes)) {
+                        if (AspectJUtils.isAspectClass(bytes)) {
                             //复制jar包中的被@Aspect注解的class文件
                             File cacheFile = new File(variantCache.aspectPath, entryName)
                             variantCache.add(bytes, cacheFile)

@@ -8,17 +8,17 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.pipeline.TransformTask
 import com.google.common.collect.ImmutableSet
 import com.sososeen09.aspeactj.cache.VariantCache
-import com.sososeen09.aspeactj.process.AJXFileProcess
-import com.sososeen09.aspeactj.process.AJXTaskProcess
+import com.sososeen09.aspeactj.process.AspectJFileProcess
+import com.sososeen09.aspeactj.process.AspectJTaskProcess
 import org.gradle.api.Project
 
-class AJXTransform extends Transform {
+class AspectJTransform extends Transform {
 
-    AJXProcedure ajxProcedure
+    AspectJProcedure ajxProcedure
     Project project
 
-    AJXTransform(Project project) {
-        ajxProcedure = new AJXProcedure(project)
+    AspectJTransform(Project project) {
+        ajxProcedure = new AspectJProcedure(project)
         this.project = project
     }
 
@@ -58,9 +58,9 @@ class AJXTransform extends Transform {
             transformInvocation.outputProvider.deleteAll()
             variantCache.reset()
 
-            AJXFileProcess ajxFileProcess = new AJXFileProcess(project, variantCache, transformInvocation)
+            AspectJFileProcess ajxFileProcess = new AspectJFileProcess(project, variantCache, transformInvocation)
             ajxFileProcess.proceed()
-            AJXTaskProcess ajxTaskProcess = new AJXTaskProcess(project, variantCache, transformInvocation)
+            AspectJTaskProcess ajxTaskProcess = new AspectJTaskProcess(project, variantCache, transformInvocation)
             ajxTaskProcess.proceed()
         }
 

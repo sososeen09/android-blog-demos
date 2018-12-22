@@ -10,7 +10,7 @@ import org.gradle.api.Project
  */
 class VariantCache {
     Project project
-    AJXCache ajxCache
+    AspectJCache ajxCache
     String variantName
 
     String cachePath
@@ -23,7 +23,7 @@ class VariantCache {
     Set<QualifiedContent.ContentType> contentTypes = ImmutableSet.<QualifiedContent.ContentType>of(QualifiedContent.DefaultContentType.CLASSES)
     Set<QualifiedContent.Scope> scopes = ImmutableSet.<QualifiedContent.Scope>of(QualifiedContent.Scope.EXTERNAL_LIBRARIES)
 
-    VariantCache(Project proj, AJXCache cache, String variantName) {
+    VariantCache(Project proj, AspectJCache cache, String variantName) {
         this.project = proj
         this.variantName = variantName
         this.ajxCache = cache

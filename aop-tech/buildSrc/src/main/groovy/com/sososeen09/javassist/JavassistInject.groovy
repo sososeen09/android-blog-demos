@@ -8,7 +8,7 @@ import javassist.CtNewMethod
 import org.gradle.api.Project
 
 
-class MyInject {
+class JavassistInject {
 
     private static ClassPool pool = ClassPool.getDefault()
     private static String injectStr = "System.out.println(\"Hello,Javassist\" ); ";
@@ -42,7 +42,9 @@ class MyInject {
                             c.defrost()
                         }
 
+
                         if (c.getName().endsWith("Activity") || c.getSuperclass().getName().endsWith("Activity")) {
+//                        if (Class.forName(c.getName()).isAssignableFrom(Class.forName("android.app.Activity"))) {
                             log.error("modify Class: " + className)
                             CtConstructor[] cts = c.getDeclaredConstructors()
                             if (cts == null || cts.length == 0) {

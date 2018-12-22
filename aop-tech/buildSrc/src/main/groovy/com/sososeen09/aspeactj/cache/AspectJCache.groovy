@@ -4,7 +4,7 @@ import com.android.builder.model.AndroidProject
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 
-class AJXCache {
+class AspectJCache {
     Project project
     String cachePath
     String aspectPath
@@ -16,7 +16,7 @@ class AJXCache {
     List<String> ajcArgs = new ArrayList<>()
 
 
-    AJXCache(Project proj) {
+    AspectJCache(Project proj) {
         this.project = proj
 
         init()
